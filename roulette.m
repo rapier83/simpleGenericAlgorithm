@@ -8,7 +8,12 @@
 % Input an 1-dimension numeric matrix,
 % If you don't need index number, roulette(m,n, **true**)
 
-function result = roulette(m, n) 
+function result = roulette(m, r, shuffle) 
+    %% Section 0: - Check Arguments
+    
+    if isempty(shuffle)
+        shuffle = false;
+    end
 
     %% Section 1: - Data Cleaning
     % ## All data must have an one column or row.
@@ -29,14 +34,29 @@ function result = roulette(m, n)
     % * NaN is turned to be 0.
     m(isnan(m)) = 0;
 
-    %% Section 2: - Set Boarder     
+    %% Section 2: - Set Roll-Board     
     %   The boarder starts from 0 to max(m)
-    boarders = [0];
-    t = 0;
-    for i = 1:numel(m)
-        t = t+m(i);
-        boarders = [boarders; t];
-        n = 1;
+    %   If you need the casino roulette, input vector like [1; 1; ...];
+    %   If shuffle is `ON` number will be replaced.
+        
+    board = cumsum(m)
+    
+    %% Section 3: - Roll Dice
+    %   
+    numroll = int16(rand(1,r) * sum(m)); 
+    check = zeros(length(m));
+    cursor = 1;
+    while cursor < r
+        if cursor == r
+            isin = (number(cursor) < numroll);
+        else
+            isin = all(m(cursor) >= numroll ...
+                && m(cursor + 1) < numroll);
+        end
+        if isin == 1
+            check(cursor) = check(cursor) + 1;
+            cursor = cursor + 1;
+        end
     end
     
 end

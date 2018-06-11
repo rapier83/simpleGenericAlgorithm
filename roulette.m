@@ -52,7 +52,6 @@ function result = roulette(m, n, varargin)
     % the random number `pin` will roll roulette, and be stop 
     % some range in where from 0 to sum of stop point
     b = [0; cumsum(m);];
-    
     % check is result of roulette
     % `n` if and only if `sum(check)`
     chk = zeros(length(m),1);
@@ -60,7 +59,7 @@ function result = roulette(m, n, varargin)
     %% Section 3: - Roll Dice
     %   
     for i = 1:n
-        c = repmat(rand * max(b), 1, length(m) + 1)'
+        c = repmat(rand * max(m), 1, length(m) + 1)';
         s = c < b;
         idx = find(s~=0, 1, 'first');
         chk(idx-1) = chk(idx-1) + 1;
